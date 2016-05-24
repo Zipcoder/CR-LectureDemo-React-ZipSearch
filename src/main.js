@@ -1,6 +1,6 @@
 " use strict ";
-
+import App from './components/App';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-ReactDOM.render(<div>React App</div>, document.querySelector("#app"));
+ReactDOM.render(<App />, document.querySelector("#app"));
