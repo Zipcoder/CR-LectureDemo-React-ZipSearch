@@ -1,5 +1,6 @@
 import Display from './Display';
 import Header from './Header';
+import Join from './Join';
 import React from 'react';
 
 class App extends React.Component {
@@ -15,7 +16,7 @@ class App extends React.Component {
       <div>
         <Header {...this.state}/>
         <Display if={!this.state.member.name}>
-          <p>this will be were an awesome app lives</p>
+          <Join emit={this.props.emit}/>
         </Display>
       </div>
     )
