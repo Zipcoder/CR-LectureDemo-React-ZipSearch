@@ -14,6 +14,7 @@ class Calculator extends React.Component {
 	}
 
 	buildString(e){
+		this.props.clearResult();
 		this.setState({equation: this.state.equation + e.target.value});
 	}
 
@@ -31,7 +32,7 @@ class Calculator extends React.Component {
 	render(){
 		return(
 			<div>
-				<div>{this.state.equation}</div>
+				<div>{this.state.equation} {this.props.answer}</div>
 				<form action="javascript:void(0)" onSubmit={this.submit}>
 					<button onClick={this.buildString} type="button" value="1">1</button>
 					<button onClick={this.buildString} type="button" value="2">2</button>

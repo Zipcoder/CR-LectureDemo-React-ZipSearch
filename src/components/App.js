@@ -3,6 +3,7 @@ import Display from './Display';
 import Header from './Header';
 import IO from 'socket.io-client';
 import Join from './Join';
+import Logger from './Logger';
 import React from 'react';
 
 class App extends React.Component {
@@ -14,11 +15,15 @@ class App extends React.Component {
     this.disconnect = this.disconnect.bind(this);
     this.joined = this.joined.bind(this);
     this.result = this.result.bind(this);
+    this.log = this.log.bind(this);
+    this.clearResult = this.clearResult.bind(this);
 
     this.state = {
       status: 'disconnected',
       member: {name:null},
-      answer: null
+      answer: '',
+      logs: [],
+      clearResult: this.clearResult
     }
   }
 
@@ -28,6 +33,7 @@ class App extends React.Component {
     this.socket.on('disconnect', this.disconnect);
     this.socket.on('joined', this.joined);
     this.socket.on('result', this.result);
+    this.socket.on('log', this.log);
   }
 
   emit(eventName, payload){
@@ -53,7 +59,14 @@ class App extends React.Component {
 
   result(answer) {
     this.setState({answer: answer});
-    console.log("received result: %s", answer);
+  }
+
+  clearResult() {
+    this.setState({answer: ''});
+  }
+
+  log(payload) {
+    this.setState({logs: payload});
   }
 
   render() {
@@ -69,6 +82,7 @@ class App extends React.Component {
 
           <Display if={this.state.member.name}>
             <Calculator emit={this.emit} {...this.state}/>
+            <Logger {...this.state} />
           </Display>
 
         </Display>

@@ -37,6 +37,7 @@ io.sockets.on('connection', function(socket){
 			name: payload.name
 		}
 		this.emit('joined', newMember);
+		this.emit('log', logger);
 		users.push(newMember);
 		io.sockets.emit('users', users);
 		console.log("User Joined: %s", payload.name);
@@ -49,6 +50,13 @@ io.sockets.on('connection', function(socket){
 		var result = getResult(payload);
 		this.emit('result', result);
 
+		logger.push({
+			name: member.name,
+			equation: payload,
+			result: result
+		});
+		io.sockets.emit('log', logger);
+		console.log("Logger updated: %s", logger.length);
 	});
 
 	connections.push(socket);
