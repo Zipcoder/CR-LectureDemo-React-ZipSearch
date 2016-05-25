@@ -1,6 +1,5 @@
 import React from 'react';
 
-/*fix className once props are set up for connection-status*/
 class Header extends React.Component {
   render() {
     return(
