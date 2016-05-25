@@ -8,6 +8,9 @@ class App extends React.Component {
   constructor() {
     super();
     this.emit = this.emit.bind(this);
+    this.connect = this.connect.bind(this);
+    this.disconnect = this.disconnect.bind(this);
+
     this.state = {
       status: 'disconnected',
       member: {name:null}
@@ -16,11 +19,22 @@ class App extends React.Component {
 
   componentWillMount(){
     this.socket = IO('http://localhost:3000');
+    this.socket.on('connect', this.connect);
+    this.socket.on('disconnect', this.disconnect);
   }
 
   emit(eventName, payload){
     this.socket.emit(eventName, payload);
   }
+
+  connect() {
+    this.setState({status:'connected'});
+  }
+
+  disconnect() {
+    this.setState({status: 'disconnected'});
+  }
+
 
   render() {
     return (
