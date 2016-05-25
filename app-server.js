@@ -18,7 +18,7 @@ io.sockets.on('connection', function(socket){
 		if(member){
 			users.splice(users.indexOf(member), 1);
 			io.sockets.emit('users', users);
-			console.log("Left: %s (%s audience members)", member.name, audience.length);
+			console.log("Left: %s (%s users)", member.name, users.length);
 		}
 
 		connections.splice(connections.indexOf(socket), 1);
@@ -29,7 +29,7 @@ io.sockets.on('connection', function(socket){
 	socket.on('join', function(payload){
 		var newMember = {
 			id: this.id,
-			name: payload.name,
+			name: payload.name
 		}
 		this.emit('joined', newMember);
 		users.push(newMember);
@@ -38,7 +38,7 @@ io.sockets.on('connection', function(socket){
 	});
 
 	connections.push(socket);
-	console.log("Connected: %s sockets remaining", connections.length);
+	console.log("Connected: %s sockets connected", connections.length);
 });
 
 console.log("Calculator server is running at 'http://localhost:3000'");
