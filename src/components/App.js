@@ -10,6 +10,7 @@ class App extends React.Component {
     this.emit = this.emit.bind(this);
     this.connect = this.connect.bind(this);
     this.disconnect = this.disconnect.bind(this);
+    this.joined = this.joined.bind(this);
 
     this.state = {
       status: 'disconnected',
@@ -21,6 +22,7 @@ class App extends React.Component {
     this.socket = IO('http://localhost:3000');
     this.socket.on('connect', this.connect);
     this.socket.on('disconnect', this.disconnect);
+    this.socket.on('joined', this.joined);
   }
 
   emit(eventName, payload){
@@ -28,6 +30,10 @@ class App extends React.Component {
   }
 
   connect() {
+    var member = (sessionStorage.member) ? JSON.parse(sessionStorage.member) : null;
+    if(member)
+      this.emit('join', member);
+
     this.setState({status:'connected'});
   }
 
@@ -35,14 +41,22 @@ class App extends React.Component {
     this.setState({status: 'disconnected'});
   }
 
+  joined(member) {
+    sessionStorage.member = JSON.stringify(member);
+    this.setState({member: member})
+    console.log(this.state.member);
+  }
 
   render() {
     return (
       <div>
         <Header {...this.state}/>
+
         <Display if={!this.state.member.name}>
           <Join emit={this.emit}/>
         </Display>
+
+
       </div>
     )
   }
