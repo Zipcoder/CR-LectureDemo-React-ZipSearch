@@ -15,4 +15,6 @@ class Header extends React.Component {
   }
 }
 
+Header.defaultProps = {status:'disconnected'}
+
 export default Header;

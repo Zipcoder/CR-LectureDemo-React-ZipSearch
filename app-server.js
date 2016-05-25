@@ -4,6 +4,11 @@ var _ = require('underscore');
 
 var connections = [];
 var users = [];
+var logger = [];
+
+var getResult = function(equation){
+	return "42";
+};
 
 app.use(express.static('./public'));
 app.use(express.static('./node_modules/bootstrap/dist'));
@@ -35,6 +40,15 @@ io.sockets.on('connection', function(socket){
 		users.push(newMember);
 		io.sockets.emit('users', users);
 		console.log("User Joined: %s", payload.name);
+	});
+
+	socket.on('submitting', function(payload){
+		var member = _.findWhere(users, { id: this.id });
+		console.log("%s submitted equation: %s", member.name, payload);
+
+		var result = getResult(payload);
+		this.emit('result', result);
+
 	});
 
 	connections.push(socket);

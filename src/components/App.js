@@ -1,3 +1,4 @@
+import Calculator from './Calculator';
 import Display from './Display';
 import Header from './Header';
 import IO from 'socket.io-client';
@@ -12,10 +13,12 @@ class App extends React.Component {
     this.connect = this.connect.bind(this);
     this.disconnect = this.disconnect.bind(this);
     this.joined = this.joined.bind(this);
+    this.result = this.result.bind(this);
 
     this.state = {
       status: 'disconnected',
-      member: {name:null}
+      member: {name:null},
+      answer: null
     }
   }
 
@@ -24,6 +27,7 @@ class App extends React.Component {
     this.socket.on('connect', this.connect);
     this.socket.on('disconnect', this.disconnect);
     this.socket.on('joined', this.joined);
+    this.socket.on('result', this.result);
   }
 
   emit(eventName, payload){
@@ -45,7 +49,11 @@ class App extends React.Component {
   joined(member) {
     sessionStorage.member = JSON.stringify(member);
     this.setState({member: member})
-    console.log(this.state.member);
+  }
+
+  result(answer) {
+    this.setState({answer: answer});
+    console.log("received result: %s", answer);
   }
 
   render() {
@@ -53,10 +61,17 @@ class App extends React.Component {
       <div>
         <Header {...this.state}/>
 
-        <Display if={!this.state.member.name}>
-          <Join emit={this.emit}/>
-        </Display>
+        <Display if={this.state.status==='connected'}>
 
+          <Display if={!this.state.member.name}>
+            <Join emit={this.emit}/>
+          </Display>
+
+          <Display if={this.state.member.name}>
+            <Calculator emit={this.emit} {...this.state}/>
+          </Display>
+
+        </Display>
       </div>
     )
   }
