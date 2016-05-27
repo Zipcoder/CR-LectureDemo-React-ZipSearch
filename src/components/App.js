@@ -1,4 +1,4 @@
-import Calculator from './Calculator';
+import Search from './Search';
 import Display from './Display';
 import Header from './Header';
 import IO from 'socket.io-client';
@@ -81,8 +81,8 @@ class App extends React.Component {
           </Display>
 
           <Display if={this.state.member.name}>
-            <Calculator emit={this.emit} {...this.state}/>
             <Logger {...this.state} />
+            <Search emit={this.emit} {...this.state}/>
           </Display>
 
         </Display>
