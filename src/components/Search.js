@@ -1,45 +1,38 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 class Search extends React.Component {
 	constructor(props){
 		super(props);
 
-		this.state = {
-			equation: ''
-		}
-
-		this.buildString = this.buildString.bind(this);
 		this.clearString = this.clearString.bind(this);
 		this.submit = this.submit.bind(this);
 	}
 
-	buildString(e){
-		this.props.clearResult();
-		this.setState({equation: this.state.equation + e.target.value});
-	}
-
 	clearString(){
-		this.setState({equation: ''});
+		ReactDOM.findDOMNode(this.refs.search).value = '';
 	}
 
 	submit(){
-		if(this.state.equation !== ''){
-			this.props.emit('submitting', this.state.equation);
+		console.log("here in submit");
+		var query = ReactDOM.findDOMNode(this.refs.search).value;
+
+		if(query !== ''){
+			this.props.emit('submitting', query);
 			this.clearString();
 		}
 	}
 
 	render(){
 		return(
-			<div>
-				<div>{this.state.equation} {this.props.answer}</div>
+			<div id="search-box">
 				<form action="javascript:void(0)" onSubmit={this.submit}>
-					<input type="text" ref="search" name="search" />
-					<button type="submit">Submit</button>
+					<button className="btn btn-primary">Submit</button>
+					<input id="form-search" className="form-control" type="text" ref="search" name="search" />
 				</form>
           	</div>
 		);
 	}
 }
 
-export default Calculator;
+export default Search;

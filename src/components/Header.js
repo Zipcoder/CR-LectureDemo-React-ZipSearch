@@ -4,10 +4,10 @@ class Header extends React.Component {
   render() {
     return(
       <header>
-        <div>
-          <h1>Calculator</h1>
+        <div id="product">
+          <h1>ZipSearch</h1>
         </div>
-        <div>
+        <div id="status">
           <span id="connection-status" className={this.props.status}>&nbsp;</span>
         </div>
       </header>

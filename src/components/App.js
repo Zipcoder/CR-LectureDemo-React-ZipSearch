@@ -1,10 +1,11 @@
-import Search from './Search';
 import Display from './Display';
 import Header from './Header';
 import IO from 'socket.io-client';
 import Join from './Join';
 import Logger from './Logger';
 import React from 'react';
+import Search from './Search';
+
 
 class App extends React.Component {
   constructor() {
@@ -81,8 +82,10 @@ class App extends React.Component {
           </Display>
 
           <Display if={this.state.member.name}>
-            <Logger {...this.state} />
-            <Search emit={this.emit} {...this.state}/>
+            <div id="main-content">
+              <Logger {...this.state} />
+              <Search emit={this.emit} />
+            </div>
           </Display>
 
         </Display>
